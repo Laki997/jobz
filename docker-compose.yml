@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5433:5432
+    container_name: db
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+      - db-data:/data/postgres
+
+  api:
+    build:
+      context: .
+    container_name: api
+    environment:
+      NODE_ENV: ${ENVIRONMENT}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  db-data:
