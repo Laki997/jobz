@@ -5,7 +5,11 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "db:deploy": "prisma migrate deploy && npx prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio --host 0.0.0.0",
+    "docker:init": "npm run db:deploy && npm run dev"
   },
   "keywords": [],
   "author": "",
